@@ -12,10 +12,10 @@
 
 class Tile : Buttton {
 char c;
-
+bool pressed;
 public:
 	Tile(Point xy, int w, int h, const string& label, Callback cb, char ch)
-        : Button(xy,w,h,label,cb), c(ch)
+        : Button(xy,w,h,label,cb), c(ch), pressed(0)
         {}
 
     void attach(Window&);
@@ -23,6 +23,12 @@ public:
     char get_char(){
     	return c;
     }
+    void press_button(){
+    pressed = 1;
+    }
+   void clear_game(){
+    pressed = 0;
+    }  
 
 }
 
