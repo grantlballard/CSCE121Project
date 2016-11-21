@@ -26,7 +26,6 @@ public:
         : Button(xy,w,h,label,cb), c(rand_char()), pressed(0)
         {}
 
-    void attach(Window&);
 
     char get_char(){
     	return c;
