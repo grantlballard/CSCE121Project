@@ -164,102 +164,127 @@ word_display.put(current_word);
 void Game_window::tile1_pressed(){
     current_word += tile1.label;
     word_display.put(current_word);
+    tile1.hide();
 }
 void Game_window::tile2_pressed(){
     current_word += tile2.label;
     word_display.put(current_word);
+    tile2.hide();
 }
 void Game_window::tile3_pressed(){
     current_word += tile3.label;
     word_display.put(current_word);
+    tile3.hide();
 }
 void Game_window::tile4_pressed(){
     current_word += tile4.label;
     word_display.put(current_word);
+    tile4.hide();
 }
 void Game_window::tile5_pressed(){
     current_word += tile5.label;
     word_display.put(current_word);
+    tile5.hide();
 }
 void Game_window::tile6_pressed(){
     current_word += tile6.label;
     word_display.put(current_word);
+    tile6.hide();
 }
 void Game_window::tile7_pressed(){
     current_word += tile7.label;
     word_display.put(current_word);
+    tile7.hide();
 }
 void Game_window::tile8_pressed(){
     current_word += tile8.label;
     word_display.put(current_word);
+    tile8.hide();
 }
 void Game_window::tile9_pressed(){
     current_word += tile9.label;
     word_display.put(current_word);
+    tile9.hide();
 }
 void Game_window::tile10_pressed(){
     current_word += tile10.label;
     word_display.put(current_word);
+    tile10.hide();
 }
 void Game_window::tile11_pressed(){
     current_word += tile11.label;
     word_display.put(current_word);
+    tile11.hide();
 }
 void Game_window::tile12_pressed(){
     current_word += tile12.label;
     word_display.put(current_word);
+    tile12.hide();
 }
 void Game_window::tile13_pressed(){
     current_word += tile13.label;
     word_display.put(current_word);
+    tile13.hide();
 }
 void Game_window::tile14_pressed(){
     current_word += tile14.label;
     word_display.put(current_word);
+    tile14.hide();
 }
 void Game_window::tile15_pressed(){
     current_word += tile15.label;
     word_display.put(current_word);
+    tile15.hide();
 }
 void Game_window::tile16_pressed(){
     current_word += tile16.label;
     word_display.put(current_word);
+    tile16.hide();
 }
 void Game_window::tile17_pressed(){
     current_word += tile17.label;
     word_display.put(current_word);
+    tile17.hide();
 }
 void Game_window::tile18_pressed(){
     current_word += tile18.label;
     word_display.put(current_word);
+    tile18.hide();
 }
 void Game_window::tile19_pressed(){
     current_word += tile19.label;
     word_display.put(current_word);
+    tile19.hide();
 }
 void Game_window::tile20_pressed(){
     current_word += tile20.label;
     word_display.put(current_word);
+    tile20.hide();
 }
 void Game_window::tile21_pressed(){
     current_word += tile21.label;
     word_display.put(current_word);
+    tile21.hide();
 }
 void Game_window::tile22_pressed(){
     current_word += tile22.label;
     word_display.put(current_word);
+    tile22.hide();
 }
 void Game_window::tile23_pressed(){
     current_word += tile23.label;
     word_display.put(current_word);
+    tile23.hide();
 }
 void Game_window::tile24_pressed(){
     current_word += tile24.label;
     word_display.put(current_word);
+    tile24.hide();
 }
 void Game_window::tile25_pressed(){
     current_word += tile25.label;
     word_display.put(current_word);
+    tile25.hide();
 }
 
 
