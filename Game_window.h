@@ -46,7 +46,33 @@ struct Game_window : Graph_lib::Window {
     
 private:
     // vector<string> words                         // save the words entered by player, no duplicates
-    Vector_ref<Button> tiles;             // holds the tiles that will be displayed
+ //   Vector_ref<Button> tiles;             // holds the tiles that will be displayed
+    Button tile1;
+    Button tile2;
+    Button tile3;
+    Button tile4;
+    Button tile5;
+    Button tile6;
+    Button tile7;
+    Button tile8;
+    Button tile9;
+    Button tile10;
+    Button tile11;
+    Button tile12;
+    Button tile13;
+    Button tile14;
+    Button tile15;
+    Button tile16;
+    Button tile17;
+    Button tile18;
+    Button tile19;
+    Button tile20;
+    Button tile21;
+    Button tile22;
+    Button tile23;
+    Button tile24;
+    Button tile25;
+
     Button enter_button;                        // button to submit word
     Button clear_button;                        // button to clear input box
     Button quit_button;                         // button to quit the game
@@ -70,12 +96,64 @@ private:
     //program should return to main window
     void quit();
     
-    void tile_pressed();
+    void tile1_pressed();
+    void tile2_pressed();
+    void tile3_pressed();
+    void tile4_pressed();
+    void tile5_pressed();
+    void tile6_pressed();
+    void tile7_pressed();
+    void tile8_pressed();
+    void tile9_pressed();
+    void tile10_pressed();
+    void tile11_pressed();
+    void tile12_pressed();
+    void tile13_pressed();
+    void tile14_pressed();
+    void tile15_pressed();
+    void tile16_pressed();
+    void tile17_pressed();
+    void tile18_pressed();
+    void tile19_pressed();
+    void tile20_pressed();
+    void tile21_pressed();
+    void tile22_pressed();
+    void tile23_pressed();
+    void tile24_pressed();
+    void tile25_pressed();
+
+
     
+
     static void cb_enter(Address, Address);
     static void cb_clear(Address, Address);
     static void cb_quit(Address, Address);
-    static void cb_tile(Address, Address);
+
+    static void cb_tile1(Address, Address);
+    static void cb_tile2(Address, Address);
+    static void cb_tile3(Address, Address);
+    static void cb_tile4(Address, Address);
+    static void cb_tile5(Address, Address);
+    static void cb_tile6(Address, Address);
+    static void cb_tile7(Address, Address);
+    static void cb_tile8(Address, Address);
+    static void cb_tile9(Address, Address);
+    static void cb_tile10(Address, Address);
+    static void cb_tile11(Address, Address);
+    static void cb_tile12(Address, Address);
+    static void cb_tile13(Address, Address);
+    static void cb_tile14(Address, Address);
+    static void cb_tile15(Address, Address);
+    static void cb_tile16(Address, Address);
+    static void cb_tile17(Address, Address);
+    static void cb_tile18(Address, Address);
+    static void cb_tile19(Address, Address);
+    static void cb_tile20(Address, Address);
+    static void cb_tile21(Address, Address);
+    static void cb_tile22(Address, Address);
+    static void cb_tile23(Address, Address);
+    static void cb_tile24(Address, Address);
+    static void cb_tile25(Address, Address);
     
     
 };
