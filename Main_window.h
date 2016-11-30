@@ -106,7 +106,7 @@ Main_window::Main_window(Point xy, int w, int h, const string& title, vector<Pla
 	four(Point((x_max()-x_max()/2)-35,125),70,20,"4x4",cb_four),
 	five(Point((x_max()-x_max()/2)-35,150),70,20,"5x5",cb_five),
 	start(Point((x_max()-x_max()/2)-45,200),90,20,"Start Game",cb_start),	
-	highscore(Point((x_max()-x_max()/2)+70,25),130,20,"Current High Score",cb_start),
+	highscore(Point((x_max()-x_max()/2)+70,25),130,20,"Current High Score",cb_highscore),
 	quit(Point(5,25),90,20,"Exit Game",cb_quit)
 	
 {
