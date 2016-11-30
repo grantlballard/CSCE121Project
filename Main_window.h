@@ -1,3 +1,7 @@
+//Main_window class, used to get name, grid size, and provide options to view high score window or exit the game
+//Main_window.h
+//Created on 11/2/16 by Alyssa Schaeffer
+
 #ifndef Main_window_h
 #define Main_window_h
 
@@ -8,16 +12,22 @@
 #include "GUI.h"
 #include "Window.h"
 #include "Simple_window.h"
+#include "Player.h"
+
+
 
 struct Main_window : Graph_lib::Window {
 	//constructor
-	Main_window(Point xy, int w, int h, const string& title);
+	Main_window(Point xy, int w, int h, const string& title, vector<Player*>& players);
 	
 	//functions to get info for other menus
 	string get_name(); //Get the name from the In box
 	int get_size() {return size;}
 	
+	
 	private:
+	
+	vector<Player*> players;
 	
 	//default name and size
 	string name = "";
@@ -60,9 +70,9 @@ struct Main_window : Graph_lib::Window {
 		}
 		else {
 			hide();
+			newPlayer(name,players);
 			//need to open game window
-			Simple_window win(Point(100,100),100,100,"window"); //dummy window
-			win.wait_for_button();
+
 		}
 	}
 
@@ -84,16 +94,18 @@ struct Main_window : Graph_lib::Window {
 };
 
 //constructor:
-Main_window::Main_window(Point xy, int w, int h, const string& title) :
+Main_window::Main_window(Point xy, int w, int h, const string& title, vector<Player*>& players) :
 
 	//initialization
 	Window(xy,w,h,title),
+	
+	players(players),
 	
 	enter_name(Point((x_max()-x_max()/2-45),75),90,20, "Enter your name:"),
 	three(Point((x_max()-x_max()/2)-35,100),70,20,"3x3",cb_three),
 	four(Point((x_max()-x_max()/2)-35,125),70,20,"4x4",cb_four),
 	five(Point((x_max()-x_max()/2)-35,150),70,20,"5x5",cb_five),
-	start(Point((x_max()-x_max()/2)-45,200),90,20,"Start Game",cb_start),
+	start(Point((x_max()-x_max()/2)-45,200),90,20,"Start Game",cb_start),	
 	highscore(Point((x_max()-x_max()/2)+70,25),130,20,"Current High Score",cb_start),
 	quit(Point(5,25),90,20,"Exit Game",cb_quit)
 	
