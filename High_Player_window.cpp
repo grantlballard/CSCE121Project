@@ -10,7 +10,7 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 
 	score_display(Point(250,125),60,30,"Score: "),
 
-	playerpic(Point(135,175), outputImage(players)),
+	playerpic(Point(135,175), play.size()==0 ? "highestplayer.jpg" : outputImage(play)),
 
 	return_button(Point(515,10), 80, 20, "RETURN", cb_return)
 
@@ -22,15 +22,26 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 		attach(name_display);										//attach the outbox for the name
 		attach(score_display);										//attach the outbox for the score
 		attach(return_button);										//attach the return button
-		name_display.put(outputHighest(players));					//set the name in the outbox
-		score_display.put(to_string(outputHighestScore(players)));	//set the score in the outbox
-		playerpic.resize(320,220);									//resize the picture
-		attach(playerpic);											//attach the image
+		if(players.size() == 0){
+			name_display.put("No Highest Player");
+			score_display.put("0");
+			//playerpic(Point(135,175), "highestplayer.jpg");
+			playerpic.resize(320,220);
+			//attach(playerpic);
+		}
+		else{
+			name_display.put(outputHighest(players));					//set the name in the outbox
+			score_display.put(to_string(outputHighestScore(players)));	//set the score in the outbox
+			//highest_player(Point(135,175), outputImage(players));
+			playerpic.resize(320,220);									//resize the picture
+			//attach(highest_player);											//attach the image
+		}
+		attach(playerpic);
 	}
 
 //-----------------------------------------------------------------------------------------------------
 	void High_Player_window::return_button_pressed(){	
-		//return to main window
+		hide();//return to main window
 	}
 
 //-----------------------------------------------------------------------------------------------------
