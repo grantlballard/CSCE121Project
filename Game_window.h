@@ -79,9 +79,10 @@ private:
     Out_box word_display;                       // display for currently selected letters
     Out_box highscore_display;                  // display the current highscore
     Out_box current_display;                    // display the current gamescore
+    Out_box log_display;
     int current_score = 0;                      // users score
     int high_score;                             // high score from the database
-    string current_word = "some word";                   // holds the current word the user is inputting
+    string current_word = "";                   // holds the current word the user is inputting
     map<char, vector<string>> dictionary;
     
     void create_tiles(int size);

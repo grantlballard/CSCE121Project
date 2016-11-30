@@ -31,6 +31,9 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
 
     highscore_display(Point(500, 20), 50, 20, "High score:"),
 
+    log_display(Point(400,150),150,50, "Game log:"),
+
+
     tile1(Point(30,10),50,50,rand_char(),cb_tile1),
     tile2(Point(90,10),50,50,rand_char(),cb_tile2),
     tile3(Point(150,10),50,50,rand_char(),cb_tile3),
@@ -59,23 +62,6 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
 
     current_display(Point(500, 50), 50, 20, "Score"){
     
-    //Create the grid of tiles
-
-    /*
-    // create the grid
-        int x = 30;
-        int y = 10;
-        for (int i =0;i<5;i++){
-            for (int j = 0;j<5;j++){
-                tiles.push_back(new Button(Point(x,y),50,50,"A",cb_tile));
-                attach(tiles[tiles.size()-1]);
-                y+=60;
-            }
-            x+=60;
-            y=10;
-        }
-    // attach the grid
-    */
 
         attach(tile1);
         attach(tile2);
@@ -108,6 +94,7 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
         attach(word_display);
         attach(highscore_display);
         attach(current_display);
+        attach(log_display);
         current_display.put("0");
         word_display.put("Enter Letters");
    
@@ -125,6 +112,32 @@ void Game_window::create_tiles(int size){
 void Game_window::clear_button_pressed(){
     current_word = "";
     word_display.put(current_word);
+    tile1.show();
+    tile2.show();
+    tile3.show();
+    tile4.show();
+    tile5.show();
+    tile6.show();
+    tile7.show();
+    tile8.show();
+    tile9.show();
+    tile10.show();
+    tile11.show();
+    tile12.show();
+    tile13.show();
+    tile14.show();
+    tile15.show();
+    tile16.show();
+    tile17.show();
+    tile18.show();
+    tile19.show();
+    tile20.show();
+    tile21.show();
+    tile22.show();
+    tile23.show();
+    tile24.show();
+    tile25.show();
+
     
 }
 
@@ -134,12 +147,40 @@ void Game_window::clear_button_pressed(){
 //untoggle the letter tiles
 void Game_window::enter_button_pressed(){
     // check dictionary to see if word is actually a word
+    // Re-Show all tiles so the user can enter in more words
+    tile1.show();
+    tile2.show();
+    tile3.show();
+    tile4.show();
+    tile5.show();
+    tile6.show();
+    tile7.show();
+    tile8.show();
+    tile9.show();
+    tile10.show();
+    tile11.show();
+    tile12.show();
+    tile13.show();
+    tile14.show();
+    tile15.show();
+    tile16.show();
+    tile17.show();
+    tile18.show();
+    tile19.show();
+    tile20.show();
+    tile21.show();
+    tile22.show();
+    tile23.show();
+    tile24.show();
+    tile25.show();
+
     if(current_word==""){return;}           // if the user inputs nothing
     transform(current_word.begin(), current_word.end(), current_word.begin(), ::tolower); //Changes the inputted word from uppercase to lower
     for(auto words : allwords){
         if(current_word == words){
             current_word = "";
             word_display.put(current_word);
+            log_display.put("Word was already entered.");
             return;
         }
     }
@@ -147,14 +188,17 @@ void Game_window::enter_button_pressed(){
     vector<string> first = dictionary[first_letter];                        
     for(auto word : first)  {                //iterates through the map The first character of the word is the key
         if(word == current_word){
-            allwords.push_back(current_word);       
-            current_score++;                // updates the score
+            allwords.push_back(current_word);
+            int n = word.size();       
+            current_score = current_score + n;                // updates the score
             current_display.put(to_string(current_score));
+            log_display.put("Word accepted, score updated!");
         }   
     }    
 current_word = "";                  // reset the current word
 
 word_display.put(current_word);
+
     
 }
 //----------------------------------------------
@@ -417,4 +461,3 @@ srand (time(NULL));
     return 2;
   }
 }
-
