@@ -28,7 +28,7 @@ private:
 	Image playerpic;				//image for the highest player
 	Button return_button;			//button to return to the main page
 	Text title_caption;				//title for the window
-	
+	//Image highest_player;
 	//to return to the home window
 	void return_button_pressed();
 

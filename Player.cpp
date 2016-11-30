@@ -80,6 +80,12 @@ ostream& operator<<(ostream& os, HighestPlayer h){
 //INPUT DATA FROM TEXT FILE
 void input_data(vector<Player*>& player){
     ifstream ifs("vector.txt");
+    if(ifs.eof()){return;}
+    // if(ifs.bad()){return;}
+    // if(ifs.fail()){return;}
+
+    if(ifs.peek() == std::ifstream::traits_type::eof()){cout << "empty" << endl; return;} 
+
     while(ifs){
         string stringin;
         int scores;

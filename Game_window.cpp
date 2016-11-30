@@ -99,7 +99,9 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
         attach(log_display);
         current_display.put("0");
         word_display.put("Enter Letters");
-   
+        int highest_score = outputHighestScore(players);
+        highscore_display.put(to_string(highest));   
+
 }
 vector<string> allwords;
 //----------------------------------------------
@@ -194,6 +196,10 @@ void Game_window::enter_button_pressed(){
             int n = word.size();       
             current_score = current_score + n;                // updates the score
             current_display.put(to_string(current_score));
+            if(current_score > highest_score){
+                highest_score = current_score;
+                highscore_display.put(to_string(highest_score));
+            }
             log_display.put("Word accepted, score updated!");
         }   
     }    
