@@ -17,7 +17,7 @@ string rand_char(){
 }
 
 
-Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_sz, const map<char, vector<string>>& dict, vector<Player*> play) : Window(xy, w, h, title),
+Game_window::Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*> play) : Window(xy, w, h, title),
     
     dictionary(dict),
 
@@ -34,6 +34,8 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
     highscore_display(Point(500, 20), 50, 20, "High score:"),
 
     log_display(Point(400,150),150,50, "Game log:"),
+
+    grid_sz(size),
 
 
     tile1(Point(30,10),50,50,rand_char(),cb_tile1),
@@ -64,32 +66,10 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
 
     current_display(Point(500, 50), 50, 20, "Score"){
     
-
-        attach(tile1);
-        attach(tile2);
-        attach(tile3);
-        attach(tile4);
-        attach(tile5);
-        attach(tile6);
-        attach(tile7);
-        attach(tile8);
-        attach(tile9);
-        attach(tile10);
-        attach(tile11);
-        attach(tile12);
-        attach(tile13);
-        attach(tile14);
-        attach(tile15);
-        attach(tile16);
-        attach(tile17);
-        attach(tile18);
-        attach(tile19);
-        attach(tile20);
-        attach(tile21);
-        attach(tile22);
-        attach(tile23);
-        attach(tile24);
-        attach(tile25);
+        
+        
+        create_tiles(grid_sz);
+       
         attach(enter_button);
         attach(clear_button);
         attach(quit_button);
@@ -99,13 +79,48 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int grid_s
         attach(log_display);
         current_display.put("0");
         word_display.put("Enter Letters");
-   
+        highest_score = outputHighestScore(players);
+        //highscore_display.put(to_string(highest_score));
+        highscore_display.put(to_string(grid_sz));
+
 }
 vector<string> allwords;
 //----------------------------------------------
 // function to create the letter tiles for the game
 void Game_window::create_tiles(int size){
     //creates the letter grid
+    if (grid_sz==5){
+        attach(tile1);
+        attach(tile2);
+        attach(tile3);
+        attach(tile4);
+        attach(tile5);
+        attach(tile6);
+        attach(tile11);
+        attach(tile16);
+        attach(tile21);
+    }
+    if (grid_sz>=4){
+        attach(tile7);
+        attach(tile8);
+        attach(tile9);
+        attach(tile10);
+        attach(tile12);
+        attach(tile17);
+        attach(tile22);
+    }
+    
+    
+    attach(tile13);
+    attach(tile14);
+    attach(tile15);
+    attach(tile18);
+    attach(tile19);
+    attach(tile20);
+    attach(tile23);
+    attach(tile24);
+    attach(tile25);
+    
 }
 
 //----------------------------------------------
@@ -114,33 +129,68 @@ void Game_window::create_tiles(int size){
 void Game_window::clear_button_pressed(){
     current_word = "";
     word_display.put(current_word);
-    tile1.show();
-    tile2.show();
-    tile3.show();
-    tile4.show();
-    tile5.show();
-    tile6.show();
-    tile7.show();
-    tile8.show();
-    tile9.show();
-    tile10.show();
-    tile11.show();
-    tile12.show();
-    tile13.show();
-    tile14.show();
-    tile15.show();
-    tile16.show();
-    tile17.show();
-    tile18.show();
-    tile19.show();
-    tile20.show();
-    tile21.show();
-    tile22.show();
-    tile23.show();
-    tile24.show();
-    tile25.show();
+    show_buttons();
 
     
+}
+
+//---------------------------------------------
+
+//allows the game window to stay open until the quit button is pressed
+bool Game_window::wait_for_button()
+// modified event loop:
+// handle all events (as per default), quit when button_pushed becomes true
+// this allows graphics without control inversion
+{
+    show();
+    button_pushed = false;
+#if 1
+    // Simpler handler
+    while (!button_pushed) Fl::wait();
+    Fl::redraw();
+#else
+    // To handle the case where the user presses the X button in the window frame
+    // to kill the application, change the condition to 0 to enable this branch.
+    Fl::run();
+#endif
+    return button_pushed;
+}
+
+
+
+//----------------------------------------------
+
+void Game_window::show_buttons(){
+    if (grid_sz==5){                         //if the grid size is 5 it will show all the tiles
+        tile1.show();
+        tile2.show();
+        tile3.show();
+        tile4.show();
+        tile5.show();
+        tile6.show();
+        tile11.show();
+        tile15.show();
+        tile21.show();
+        
+    }
+    if (grid_sz>=4){                        //if the grid size is four it will show a 4x4 if greater 5x5
+        tile7.show();
+        tile8.show();
+        tile9.show();
+        tile10.show();
+        tile12.show();
+        tile17.show();
+        tile22.show();
+    }
+        tile23.show();                      //default, always shown
+        tile24.show();
+        tile25.show();
+        tile18.show();
+        tile19.show();
+        tile20.show();
+        tile13.show();
+        tile14.show();
+        tile15.show();
 }
 
 //----------------------------------------------
@@ -150,31 +200,7 @@ void Game_window::clear_button_pressed(){
 void Game_window::enter_button_pressed(){
     // check dictionary to see if word is actually a word
     // Re-Show all tiles so the user can enter in more words
-    tile1.show();
-    tile2.show();
-    tile3.show();
-    tile4.show();
-    tile5.show();
-    tile6.show();
-    tile7.show();
-    tile8.show();
-    tile9.show();
-    tile10.show();
-    tile11.show();
-    tile12.show();
-    tile13.show();
-    tile14.show();
-    tile15.show();
-    tile16.show();
-    tile17.show();
-    tile18.show();
-    tile19.show();
-    tile20.show();
-    tile21.show();
-    tile22.show();
-    tile23.show();
-    tile24.show();
-    tile25.show();
+    show_buttons();
 
     if(current_word==""){return;}           // if the user inputs nothing
     transform(current_word.begin(), current_word.end(), current_word.begin(), ::tolower); //Changes the inputted word from uppercase to lower
@@ -194,6 +220,10 @@ void Game_window::enter_button_pressed(){
             int n = word.size();       
             current_score = current_score + n;                // updates the score
             current_display.put(to_string(current_score));
+            if(current_score > highest_score){
+                highest_score = current_score;
+                highscore_display.put(to_string(highest_score));
+            }
             log_display.put("Word accepted, score updated!");
         }   
     }    
@@ -360,6 +390,7 @@ void Game_window::cb_quit(Address, Address pw){
 
 // return the current score, close the game window
 void Game_window::quit(){
+    button_pushed = true;
     // store the score for the current player
     hide();                       // close the window
 }
@@ -441,26 +472,26 @@ void Game_window::cb_tile25(Address, Address pw){
 }
 
 
-int main(){
-srand (time(NULL)); 
-  try {
-    // construct the GUI window
-    
-    //vector<string> d;
-    map<char, vector<string>> dict;
-    input_dictonary(dict);
-    cout << dict.size() << endl;
-    vector<Players*> players;
-    input_data(players);
-    Game_window win(Point(100,100),600,400,"lines",3,dict, players);
-    return gui_main();  // inherited from Window; calls FLTK's run
-  }
-  catch(exception& e) {
-    cerr << "exception: " << e.what() << '\n';
-    return 1;
-  }
-  catch(...) {
-    cerr << "some exception\n";
-    return 2;
-  }
-}
+//int main(){
+//srand (time(NULL)); 
+//  try {
+//    // construct the GUI window
+//    
+//    //vector<string> d;
+//    map<char, vector<string>> dict;
+//    input_dictonary(dict);
+//    cout << dict.size() << endl;
+//    vector<Players*> players;
+//    input_data(players);
+//    Game_window win(Point(100,100),600,400,"lines",3,dict, players);
+//    return gui_main();  // inherited from Window; calls FLTK's run
+//  }
+//  catch(exception& e) {
+//    cerr << "exception: " << e.what() << '\n';
+//    return 1;
+//  }
+//  catch(...) {
+//    cerr << "some exception\n";
+//    return 2;
+//  }
+//}

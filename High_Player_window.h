@@ -20,7 +20,10 @@ using namespace std;
 
 struct High_Player_window : Graph_lib::Window{
 	High_Player_window(Point xy, int w, int h, const string& title,const vector<Player*> play);
-
+    
+    //allows for window to stay open
+    bool wait_for_button();
+    
 private:
 	vector<Player*> players;		//vector of pointers to Player
 	Out_box name_display;			//display the highest players name
@@ -28,7 +31,9 @@ private:
 	Image playerpic;				//image for the highest player
 	Button return_button;			//button to return to the main page
 	Text title_caption;				//title for the window
-	
+    
+    bool button_pushed = false;     //used in wait_for_button();
+    
 	//to return to the home window
 	void return_button_pressed();
 
