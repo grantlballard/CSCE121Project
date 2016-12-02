@@ -19,6 +19,7 @@
 #include <vector>
 #include <fstream>
 #include "Player.h"
+#include "Image_window.h"
 
 using namespace Graph_lib;
 using namespace std;
@@ -42,7 +43,7 @@ using namespace std;
 
 struct Game_window : Graph_lib::Window {
     
-    Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*> play); // should possibly take in the players name in order to save the player score once game is finished
+    Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*>& play, string username); // should possibly take in the players name in order to save the player score once game is finished
     // or take reference to a player object to update score when game is finished
     
     bool wait_for_button();                 //allows the game window to stay open
@@ -91,6 +92,11 @@ private:
     bool button_pushed = false;
     int highest_score;
     int grid_sz;
+    string username;
+    // In_box image_name;
+    //Button enter_image_name;
+    //string newimage = "";
+    //bool isbuttonpressed;
 
     void create_tiles(int size);
     
@@ -107,6 +113,8 @@ private:
     //program should return to main window
     void quit();
     
+    // void enter_image_pressed();
+
     void tile1_pressed();
     void tile2_pressed();
     void tile3_pressed();
@@ -139,6 +147,7 @@ private:
     static void cb_enter(Address, Address);
     static void cb_clear(Address, Address);
     static void cb_quit(Address, Address);
+    // static void cb_enter_image(Address, Address);
 
     static void cb_tile1(Address, Address);
     static void cb_tile2(Address, Address);

@@ -14,12 +14,13 @@
 #include "Simple_window.h"
 #include "Player.h"
 #include "Game_window.h"
+#include "Image_window.h"
 
 
 
 struct Main_window : Graph_lib::Window {
 	//constructor
-	Main_window(Point xy, int w, int h, const string& title,map<char,vector<string>> dict ,vector<Player*>& players);
+	Main_window(Point xy, int w, int h, const string& title,map<char,vector<string>> dict, vector<Player*>& players);
 	
 	//functions to get info for other menus
 	string get_name(); //Get the name from the In box
@@ -76,9 +77,9 @@ struct Main_window : Graph_lib::Window {
 		}
 		else {
 			hide();
+			input_data(players);
 			newPlayer(name,players);
-            Game_window game(Point(100,100),600,400,"Game Window",size,dictionary,players);
-            
+            Game_window game(Point(100,100),600,400,"Game Window",size,dictionary,players,name);
             game.wait_for_button();
             this->show();
             name = "";
@@ -92,12 +93,26 @@ struct Main_window : Graph_lib::Window {
 	void highscore_pressed() {
 		//need to open high score window, but leave main window open
         hide();
+        input_data(players);
         High_Player_window highscorewin(Point(100,100),600,400,"High Score Player",players);
         highscorewin.wait_for_button();
         this->show();
 	}
 	
 	void quit_pressed() {
+		// vector<int> scores;
+		// cerr << "The player's size is " << players.size() << endl;
+		// for(auto p : players){
+		// 	//scores = p-> getScoresVector();
+		// 	if(p != NULL){
+		// 	cerr << "Before exiting, the player " << p->getName() << endl << " whose identifier is " << p->getIdentifier(); //<<" scores are ";
+		// 	//for(auto s : scores){
+		// 	//	cerr << s << " ";
+		// 	//}
+		// 	cerr << endl;
+		// 	}
+		// }
+		// output_data(players);
 		hide(); //exits game
 	}
 	

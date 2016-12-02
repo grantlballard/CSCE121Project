@@ -83,8 +83,9 @@ find highest player name and score and image title
 */
 
 //to check if the player already exist
+//char setIdentifier(Player play);
 bool checkHighest(vector<Player*>& player);
-void setHighest(vector<Player*>& player);
+void setHighest(vector<Player*>& player, string name);
 void deleteHighest(vector<Player*>& player);
 string outputHighest(vector<Player*> player);
 void input_data(vector<Player*>& player);
