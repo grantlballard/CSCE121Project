@@ -25,9 +25,7 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 		if(players.size() == 0){
 			name_display.put("No Highest Player");
 			score_display.put("0");
-			//playerpic(Point(135,175), "highestplayer.jpg");
 			playerpic.resize(320,220);
-			//attach(playerpic);
 		}
 		else{
 			name_display.put(outputHighest(players));					//set the name in the outbox

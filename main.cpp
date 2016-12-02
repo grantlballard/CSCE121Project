@@ -32,6 +32,7 @@ int main() {
     try {
         vector<Player*> players;
         input_data(players);
+       // cout << "The first player is " << players[0]->getName()<< endl;
         map<char, vector<string>> dict;
         input_dictonary(dict);
         Main_window main_win(Point(50,50),600,400,"Word Search Game",dict,players);
