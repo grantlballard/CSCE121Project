@@ -17,11 +17,13 @@ string rand_char(){
 }
 
 
-Game_window::Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*> play) : Window(xy, w, h, title),
+Game_window::Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*>& play, string name) : Window(xy, w, h, title),
     
     dictionary(dict),
 
     players(play),
+
+    username(name),
 
     enter_button(Point(400,240),50, 20, "ENTER", cb_enter),
 
@@ -35,8 +37,11 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int size, 
 
     log_display(Point(400,150),150,50, "Game log:"),
 
-    grid_sz(size),
+    //image_name(Point(450,100), 90, 25, "Image Name:"),
 
+    //enter_image_name(Point(540, 100), 50, 20, "ENTER", cb_enter_image),
+
+    grid_sz(size),
 
     tile1(Point(30,10),50,50,rand_char(),cb_tile1),
     tile2(Point(90,10),50,50,rand_char(),cb_tile2),
@@ -77,19 +82,23 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int size, 
         attach(highscore_display);
         attach(current_display);
         attach(log_display);
+        //attach(image_name);
+       // attach(enter_image_name);
+        //enter_image_name.hide();
+        //hide(enter_image_name);
+        //hide(image_name);
         current_display.put("0");
         word_display.put("Enter Letters");
         highest_score = outputHighestScore(players);
-        //highscore_display.put(to_string(highest_score));
-        highscore_display.put(to_string(grid_sz));
-
+        highscore_display.put(to_string(highest_score));
 }
 vector<string> allwords;
+string newimage = "";
 //----------------------------------------------
 // function to create the letter tiles for the game
 void Game_window::create_tiles(int size){
     //creates the letter grid
-    if (grid_sz==5){
+    if (grid_sz == 5){
         attach(tile1);
         attach(tile2);
         attach(tile3);
@@ -100,7 +109,7 @@ void Game_window::create_tiles(int size){
         attach(tile16);
         attach(tile21);
     }
-    if (grid_sz>=4){
+    if (grid_sz >= 4){
         attach(tile7);
         attach(tile8);
         attach(tile9);
@@ -170,6 +179,7 @@ void Game_window::show_buttons(){
         tile6.show();
         tile11.show();
         tile15.show();
+        tile16.show();
         tile21.show();
         
     }
@@ -223,6 +233,9 @@ void Game_window::enter_button_pressed(){
             if(current_score > highest_score){
                 highest_score = current_score;
                 highscore_display.put(to_string(highest_score));
+                Image_window image_win(Point(400,50),400,100,"New High Score!",players, username, &newimage);
+                image_win.wait_for_button();
+                this -> show();
             }
             log_display.put("Word accepted, score updated!");
         }   
@@ -230,12 +243,10 @@ void Game_window::enter_button_pressed(){
 current_word = "";                  // reset the current word
 
 word_display.put(current_word);
-
     
 }
 //----------------------------------------------
 
-//what to do when a tile is pressed
 
 void Game_window::tile1_pressed(){
     current_word += tile1.label;
@@ -390,9 +401,33 @@ void Game_window::cb_quit(Address, Address pw){
 
 // return the current score, close the game window
 void Game_window::quit(){
-    button_pushed = true;
-    // store the score for the current player
-    hide();                       // close the window
+        //add the current score to the end of the vector of scores for that person
+        //check highest
+        //delete highest
+        //set highest
+        int iterator = 0;
+        for(auto p : players){
+            if(p -> getName() == username){
+                p -> addScore(current_score);
+                break;
+            }
+        }
+        bool same_highest = checkHighest(players);
+        if(same_highest){
+            output_data(players);
+            button_pushed = true;
+            hide(); 
+        }
+        else{
+            deleteHighest(players);
+            cout << "Creating the new highest player" << endl;
+            setHighest(players, newimage);
+            button_pushed = true;
+            hide();
+        }
+
+  
+    // }                    // close the window
 }
 
 void Game_window::cb_tile1(Address, Address pw){
@@ -470,7 +505,9 @@ void Game_window::cb_tile24(Address, Address pw){
 void Game_window::cb_tile25(Address, Address pw){
     reference_to<Game_window>(pw).tile25_pressed();
 }
-
+// void Game_window::cb_enter_image(Address, Address pw){
+//     reference_to<Game_window>(pw).enter_image_pressed();
+// }
 
 //int main(){
 //srand (time(NULL)); 

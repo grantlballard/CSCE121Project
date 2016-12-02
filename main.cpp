@@ -32,10 +32,24 @@ int main() {
     try {
         vector<Player*> players;
         input_data(players);
+       // cout << "The first player is " << players[0]->getName()<< endl;
         map<char, vector<string>> dict;
         input_dictonary(dict);
         Main_window main_win(Point(50,50),600,400,"Word Search Game",dict,players);
         return gui_main();
+        vector<int> scores;
+        cerr << "The player's size is " << players.size() << endl;
+        for(auto p : players){
+            //scores = p-> getScoresVector();
+            if(p != NULL){
+            cerr << "Before exiting, the player " << p->getName() << endl << " whose identifier is " << p->getIdentifier(); //<<" scores are ";
+            //for(auto s : scores){
+            //  cerr << s << " ";
+            //}
+            cerr << endl;
+            }
+        }
+        output_data(players);
 
         
     }
