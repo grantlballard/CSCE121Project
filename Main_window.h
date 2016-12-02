@@ -1,6 +1,7 @@
 //Main_window class, used to get name, grid size, and provide options to view high score window or exit the game
 //Main_window.h
 //Created on 11/2/16 by Alyssa Schaeffer
+//Updated last 10:42 AM 12/2/16
 
 #ifndef Main_window_h
 #define Main_window_h
@@ -19,7 +20,7 @@
 
 struct Main_window : Graph_lib::Window {
 	//constructor
-	Main_window(Point xy, int w, int h, const string& title,map<char,vector<string>> dict ,vector<Player*>& players);
+	Main_window(Point xy, int w, int h, const string& title, map<char,vector<string>> dict, vector<Player*>& players);
 	
 	//functions to get info for other menus
 	string get_name(); //Get the name from the In box
@@ -49,6 +50,7 @@ struct Main_window : Graph_lib::Window {
 	Button start;
 	Button highscore;
 	Button quit;
+	Out_box err;
 	
 	//function members
 
@@ -68,13 +70,13 @@ struct Main_window : Graph_lib::Window {
 		name = get_name(); //gets name from in box 
 		if(name == "" || size == 0) { //displays error message if info not inputted
 			if(existing_err == false) {
-				Out_box err(Point((x_max()-x_max()/2-140),250),300,20,"");
-				attach(err);
-				err.put("Please enter your name and choose grid size");
+				err.put("Name or size not entered, please try again");
 				existing_err = true;
 			}
 		}
 		else {
+			if(existing_err == true) err.put("Please enter your name and size of the grid");
+			existing_err = false;
 			hide();
 			newPlayer(name,players);
             Game_window game(Point(100,100),600,400,"Game Window",size,dictionary,players);
@@ -84,13 +86,12 @@ struct Main_window : Graph_lib::Window {
             name = "";
             size = 0;
             enter_name.put(name);
-			//need to open game window
+			set_label("Word Search Game");
 
 		}
 	}
 
 	void highscore_pressed() {
-		//need to open high score window, but leave main window open
         hide();
         High_Player_window highscorewin(Point(100,100),600,400,"High Score Player",players);
         highscorewin.wait_for_button();
@@ -120,13 +121,14 @@ Main_window::Main_window(Point xy, int w, int h, const string& title,map<char,ve
 	
 	players(players),
 	
-	enter_name(Point((x_max()-x_max()/2-45),75),90,20, "Enter your name:"),
+	enter_name(Point((x_max()-x_max()/2-45),75),90,20, "Name:"),
 	three(Point((x_max()-x_max()/2)-35,100),70,20,"3x3",cb_three),
 	four(Point((x_max()-x_max()/2)-35,125),70,20,"4x4",cb_four),
 	five(Point((x_max()-x_max()/2)-35,150),70,20,"5x5",cb_five),
-	start(Point((x_max()-x_max()/2)-45,200),90,20,"Start Game",cb_start),	
-	highscore(Point((x_max()-x_max()/2)+70,25),130,20,"Current High Score",cb_highscore),
-	quit(Point(5,25),90,20,"Exit Game",cb_quit)
+	start(Point((x_max()-x_max()/2)-45,195),90,20,"Start Game",cb_start),	
+	highscore(Point((x_max()-x_max()/2)-65,280),130,20,"Current High Score",cb_highscore), //
+	quit(Point((x_max()-x_max()/2)-45,320),90,20,"Exit Game",cb_quit), //
+	err(Point((x_max()-x_max()/2-140),240),300,20,"")
 	
 {
 	attach(enter_name);
@@ -136,6 +138,9 @@ Main_window::Main_window(Point xy, int w, int h, const string& title,map<char,ve
 	attach(start);
 	attach(highscore);
 	attach(quit);
+	attach(err);
+	
+	err.put("Please enter your name and size of the grid");;
 }
 
 string Main_window::get_name() {
@@ -169,3 +174,6 @@ void Main_window::cb_quit(Address, Address pw){
 }
 
 #endif
+
+//Problem is that there is no way to detach a box that has already been attached.
+//Possible solution: have the blank box there at all times
