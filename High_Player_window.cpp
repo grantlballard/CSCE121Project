@@ -10,7 +10,7 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 
 	score_display(Point(250,125),60,30,"Score: "),
 
-	playerpic(Point(135,175), outputImage(players)),
+	playerpic(Point(135,175), play.size()==0 ? "highestplayer.jpg" : outputImage(play)),
 
 	return_button(Point(515,10), 80, 20, "RETURN", cb_return)
 
@@ -22,15 +22,50 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 		attach(name_display);										//attach the outbox for the name
 		attach(score_display);										//attach the outbox for the score
 		attach(return_button);										//attach the return button
-		name_display.put(outputHighest(players));					//set the name in the outbox
-		score_display.put(to_string(outputHighestScore(players)));	//set the score in the outbox
-		playerpic.resize(320,220);									//resize the picture
-		attach(playerpic);											//attach the image
+		if(players.size() == 0){
+			name_display.put("No Highest Player");
+			score_display.put("0");
+			//playerpic(Point(135,175), "highestplayer.jpg");
+			playerpic.resize(320,220);
+			//attach(playerpic);
+		}
+		else{
+			name_display.put(outputHighest(players));					//set the name in the outbox
+			score_display.put(to_string(outputHighestScore(players)));	//set the score in the outbox
+			//highest_player(Point(135,175), outputImage(players));
+			playerpic.resize(320,220);									//resize the picture
+			//attach(highest_player);											//attach the image
+		}
+		attach(playerpic);
 	}
+
+
+//-----------------------------------------------------------------------------------------------------
+
+bool High_Player_window::wait_for_button()
+// modified event loop:
+// handle all events (as per default), quit when button_pushed becomes true
+// this allows graphics without control inversion
+{
+    show();
+    button_pushed = false;
+#if 1
+    // Simpler handler
+    while (!button_pushed) Fl::wait();
+    Fl::redraw();
+#else
+    // To handle the case where the user presses the X button in the window frame
+    // to kill the application, change the condition to 0 to enable this branch.
+    Fl::run();
+#endif
+    return button_pushed;
+}
+
 
 //-----------------------------------------------------------------------------------------------------
 	void High_Player_window::return_button_pressed(){	
-		//return to main window
+        button_pushed = true;
+        hide();//return to main window
 	}
 
 //-----------------------------------------------------------------------------------------------------
@@ -39,19 +74,19 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 		reference_to<High_Player_window>(pw).return_button_pressed();
 	}
 
-int main(){
-	try{
-		vector<Player*> players;
-		input_data(players);
-		High_Player_window win(Point(100,100),600,400,"Player",players);
-		return gui_main();
-	}
-	catch(exception& e) {
-    cerr << "exception: " << e.what() << '\n';
-    return 1;
-	}
-	catch(...) {
-	cerr << "some exception\n";
-	return 2;
-	}
-}
+//int main(){
+//	try{
+//		vector<Player*> players;
+//		input_data(players);
+//		High_Player_window win(Point(100,100),600,400,"Player",players);
+//		return gui_main();
+//	}
+//	catch(exception& e) {
+//    cerr << "exception: " << e.what() << '\n';
+//    return 1;
+//	}
+//	catch(...) {
+//	cerr << "some exception\n";
+//	return 2;
+//	}
+//}

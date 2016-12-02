@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include "std_lib_facilities_4.h"
+//#include <ifstream>
 
 class Player {
     string name;

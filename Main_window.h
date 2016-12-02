@@ -13,25 +13,31 @@
 #include "Window.h"
 #include "Simple_window.h"
 #include "Player.h"
+#include "Game_window.h"
 
 
 
 struct Main_window : Graph_lib::Window {
 	//constructor
-	Main_window(Point xy, int w, int h, const string& title, vector<Player*>& players);
+	Main_window(Point xy, int w, int h, const string& title,map<char,vector<string>> dict ,vector<Player*>& players);
 	
 	//functions to get info for other menus
 	string get_name(); //Get the name from the In box
 	int get_size() {return size;}
 	
+    
 	
 	private:
+    
+    //dictionary that holds valid words
+    map<char,vector<string>> dictionary;
 	
 	vector<Player*> players;
 	
 	//default name and size
 	string name = "";
 	int size = 0;
+    
 	
 	bool existing_err = false; //checks if there is already an error box on the menu
 
@@ -71,6 +77,13 @@ struct Main_window : Graph_lib::Window {
 		else {
 			hide();
 			newPlayer(name,players);
+            Game_window game(Point(100,100),600,400,"Game Window",size,dictionary,players);
+            
+            game.wait_for_button();
+            this->show();
+            name = "";
+            size = 0;
+            enter_name.put(name);
 			//need to open game window
 
 		}
@@ -78,6 +91,10 @@ struct Main_window : Graph_lib::Window {
 
 	void highscore_pressed() {
 		//need to open high score window, but leave main window open
+        hide();
+        High_Player_window highscorewin(Point(100,100),600,400,"High Score Player",players);
+        highscorewin.wait_for_button();
+        this->show();
 	}
 	
 	void quit_pressed() {
@@ -94,10 +111,12 @@ struct Main_window : Graph_lib::Window {
 };
 
 //constructor:
-Main_window::Main_window(Point xy, int w, int h, const string& title, vector<Player*>& players) :
+Main_window::Main_window(Point xy, int w, int h, const string& title,map<char,vector<string>> dict ,vector<Player*>& players) :
 
 	//initialization
 	Window(xy,w,h,title),
+
+    dictionary(dict),
 	
 	players(players),
 	

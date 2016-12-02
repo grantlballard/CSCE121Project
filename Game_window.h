@@ -18,31 +18,34 @@
 #include <cassert>
 #include <vector>
 #include <fstream>
+#include "Player.h"
 
 using namespace Graph_lib;
 using namespace std;
 
 //---------------------------------------------
 // define a struct for the game window
-void input_dictonary(map<char, vector<string>>& dict){
-    ifstream ifs("wordsEna.txt");
-    while(true){
-        string word;
-        char key;
-        ifs>>word;
-        if(ifs.eof() == true){return;}
-        else{
-            key = word[0];
-            dict[key].push_back(word);
-        }
-    }
-    cout << dict.size() << endl;
-}
+//void input_dictonary(map<char, vector<string>>& dict){
+//    ifstream ifs("wordsEna.txt");
+//    while(true){
+//        string word;
+//        char key;
+//        ifs>>word;
+//        if(ifs.eof() == true){return;}
+//        else{
+//            key = word[0];
+//            dict[key].push_back(word);
+//        }
+//    }
+//    cout << dict.size() << endl;
+//}
 
 struct Game_window : Graph_lib::Window {
     
-    Game_window(Point xy, int w, int h, const string& title, int grid_sz, const map<char, vector<string>>& dict, vector<Players*> play); // should possibly take in the players name in order to save the player score once game is finished
+    Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*> play); // should possibly take in the players name in order to save the player score once game is finished
     // or take reference to a player object to update score when game is finished
+    
+    bool wait_for_button();                 //allows the game window to stay open
     
 private:
     // vector<string> words                         // save the words entered by player, no duplicates
@@ -85,6 +88,9 @@ private:
     string current_word = "";                   // holds the current word the user is inputting
     map<char, vector<string>> dictionary;
     vector<Player*> players;
+    bool button_pushed = false;
+    int highest_score;
+    int grid_sz;
 
     void create_tiles(int size);
     
@@ -93,6 +99,9 @@ private:
     
     // clear the word_display box
     void clear_button_pressed();
+    
+    //show all the tiles
+    void show_buttons();
     
     // should update the player list and scores, end the current game
     //program should return to main window
