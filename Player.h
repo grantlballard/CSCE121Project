@@ -35,6 +35,8 @@ public:
 
     virtual char getIdentifier() const {return 'P';}
 
+    virtual void changeImage(string imagename){return;}
+
     virtual void print(ofstream& ofs);
 
     virtual string getImage() const {return "";}
@@ -65,6 +67,8 @@ public:
     void print(ofstream& ofs);
 
     string getImage() const {return image;}
+
+    void changeImage(string imagename){image = imagename; return;}
 };
 
 ostream& operator<<(ostream& os, HighestPlayer h);
@@ -83,8 +87,9 @@ find highest player name and score and image title
 */
 
 //to check if the player already exist
+//char setIdentifier(Player play);
 bool checkHighest(vector<Player*>& player);
-void setHighest(vector<Player*>& player);
+void setHighest(vector<Player*>& player, string name);
 void deleteHighest(vector<Player*>& player);
 string outputHighest(vector<Player*> player);
 void input_data(vector<Player*>& player);

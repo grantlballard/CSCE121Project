@@ -25,16 +25,12 @@ High_Player_window::High_Player_window(Point xy, int w, int h, const string& tit
 		if(players.size() == 0){
 			name_display.put("No Highest Player");
 			score_display.put("0");
-			//playerpic(Point(135,175), "highestplayer.jpg");
 			playerpic.resize(320,220);
-			//attach(playerpic);
 		}
 		else{
 			name_display.put(outputHighest(players));					//set the name in the outbox
 			score_display.put(to_string(outputHighestScore(players)));	//set the score in the outbox
-			//highest_player(Point(135,175), outputImage(players));
 			playerpic.resize(320,220);									//resize the picture
-			//attach(highest_player);											//attach the image
 		}
 		attach(playerpic);
 	}
@@ -65,7 +61,7 @@ bool High_Player_window::wait_for_button()
 //-----------------------------------------------------------------------------------------------------
 	void High_Player_window::return_button_pressed(){	
         button_pushed = true;
-        hide();//return to main window
+        hide();					//return to main window
 	}
 
 //-----------------------------------------------------------------------------------------------------
@@ -73,20 +69,3 @@ bool High_Player_window::wait_for_button()
 	void High_Player_window::cb_return(Address, Address pw){
 		reference_to<High_Player_window>(pw).return_button_pressed();
 	}
-
-//int main(){
-//	try{
-//		vector<Player*> players;
-//		input_data(players);
-//		High_Player_window win(Point(100,100),600,400,"Player",players);
-//		return gui_main();
-//	}
-//	catch(exception& e) {
-//    cerr << "exception: " << e.what() << '\n';
-//    return 1;
-//	}
-//	catch(...) {
-//	cerr << "some exception\n";
-//	return 2;
-//	}
-//}
