@@ -212,7 +212,7 @@ void Game_window::enter_button_pressed(){
         if(current_word == words){
             current_word = "";
             word_display.put(current_word);
-            log_display.put("Word was already entered.");
+            log_display.put("Repeated word");
             return;
         }
     }
@@ -233,10 +233,15 @@ void Game_window::enter_button_pressed(){
                     this -> show();
                     changedimage == true;
                 }
+                log_display.put("Word accepted");
+                current_word = "";                  // reset the current word
+                word_display.put(current_word);
+                return;
             }
-            log_display.put("Word accepted, score updated!");
+            
         }   
     }    
+log_display.put("Not a real word");
 current_word = "";                  // reset the current word
 
 word_display.put(current_word);
