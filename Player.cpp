@@ -1,4 +1,6 @@
-//Player.cpp 
+/*Player.cpp
+Contains all of the functions that relate to the Player class or the vector of Player* */ 
+
 
 #include "Player.h"
 
@@ -28,6 +30,11 @@ string Player::printScores() const{
 
 void HighestPlayer::print(ofstream& ofs){
     vector<int> scores = getScoresVector();
+    cout << endl << getIdentifier() << endl << getName() << endl << scores.size() << endl;
+    for(auto s : scores){
+        cout << s << " ";
+    }
+    cout << endl << getImage();
     ofs << getIdentifier() << endl
         << getName() << endl;
     for(auto s : scores){
@@ -38,6 +45,10 @@ void HighestPlayer::print(ofstream& ofs){
 
 void Player::print(ofstream& ofs){
     vector<int> scores = getScoresVector();
+    cout << endl << getIdentifier() << endl << getName() << endl << "The player's score's vector size is " << scores.size() << endl;
+    for(auto s : scores){
+        cout << s << " ";
+    }
     ofs << getIdentifier() << endl
         << getName() << endl;
     for(auto s : scores){
@@ -79,11 +90,9 @@ ostream& operator<<(ostream& os, HighestPlayer h){
 
 //INPUT DATA FROM TEXT FILE
 void input_data(vector<Player*>& player){
+    player.erase(player.begin(), player.end());
     ifstream ifs("vector.txt");
     if(ifs.eof()){return;}
-    // if(ifs.bad()){return;}
-    // if(ifs.fail()){return;}
-
     if(ifs.peek() == std::ifstream::traits_type::eof()){cout << "empty" << endl; return;} 
 
     while(ifs){
@@ -94,12 +103,12 @@ void input_data(vector<Player*>& player){
         string id;
         string imagename;
         ifs >> id;
-        ifs.ignore();
+        //ifs.ignore();
         if(!id.empty() && id[id.size()-1] == '\r'){
             id = id.erase(id.size()-1);
         }
         kind = id[0];
-        //ifs.ignore();
+        ifs.ignore();
         string name;
         getline(ifs,name);  //uses getline to deal with spaces
         //deals with end line characters
@@ -112,7 +121,6 @@ void input_data(vector<Player*>& player){
         while(ss >> scores){
             allscores.push_back(scores);
         }
-
         if (kind == 'P'){
             player.push_back(new Player(name, allscores));
         }
@@ -145,29 +153,40 @@ void newPlayer(string name, vector<Player*>& player){
         //start the game
         return;
     }
-
-    player.push_back(new Player(name));
-    cout << "New player added" << endl;
-    return;
+    else{
+        player.push_back(new Player(name));
+        cout << "New player added" << endl;
+        return;
+    }
 }
+
 
 /*----------------------------------------------------------------------------------------*/
 
 //DELETE HIGHEST PLAYER AND SET AS REGULAR PLAYER
 void deleteHighest(vector<Player*>& player){
+    if(player.size() != 0){
+        cout << player[player.size()-1]->getName() << endl;
+    }
     for (unsigned int i = 0; i < player.size(); ++i) {
         if (player[i] -> getIdentifier() == 'H'){
-            player.push_back(new Player(player[i]->getName(), player[i]->getScoresVector()));
+            Player* delete_this = player[i];
+            string n = delete_this->getName();
+            vector<int> v = delete_this->getScoresVector();
             delete player[i];
+
             player.erase(player.begin()+i);
+            player.push_back(new Player(n,v));
+
             return;
-        }
+        } 
+
     }
 }
 
 
 //SET NEW PLAYER AS THE HIGHEST PLAYER
-void setHighest(vector<Player*>& player){
+void setHighest(vector<Player*>& player, string image){
     int highest = -99;
     int element;
     for (unsigned int i = 0; i < player.size(); ++i) {
@@ -176,15 +195,12 @@ void setHighest(vector<Player*>& player){
             element = i;
         }
     }
-    //change this to an in-box to take in the image name
-    cout << "Please enter your image file" << endl;
-    
-    string image;
-    cin >> image;
     player.push_back(new HighestPlayer(player[element]->getName(), player[element]->getScoresVector(), image));
     delete player[element];
+    cout << endl << endl;
     player.erase(player.begin()+element);
-    cout << "New highest player" << endl;
+
+    output_data(player);
 
 }
 
@@ -201,11 +217,7 @@ bool checkHighest(vector<Player*>& player){
     }
 
     if (player[element]->getIdentifier() == 'H'){return true;}
-    else {
-        deleteHighest(player);
-        setHighest(player);
-        return false;
-    }
+    else {return false;}
 
 }
 
@@ -247,14 +259,12 @@ void output_data(const vector<Player*>& player)
   //uses virtual function to output the information of each element
   for (auto p : player) {
     if(p->getIdentifier() == 'P'){
-      p->print(ofs);
-      //delete p;
+        p->print(ofs);
     }
   }
   for (auto p : player) {
     if(p->getIdentifier() == 'H'){
       p->print(ofs);
-      //delete p;
     }
   }
 }
@@ -273,7 +283,6 @@ void newScore(string name, int score, vector<Player*>& player)
             cout << iterator << endl;
           iterator++;
         }
-        cout << "The person's name is " << player[iterator] -> getName() << endl;
         player[iterator]->addScore(score);
         
     }
