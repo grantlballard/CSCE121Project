@@ -1,10 +1,8 @@
-//
-//  Game_window.cpp
-//  CSCE121_Project_current
-//
-//  Created by Ryan Leitner on 11/2/16.
-//  Copyright © 2016 Ryan Leitner. All rights reserved.
-//
+/*Game window is used to show the actual game part of the project
+Parameters needed include the map of dictionary words, the vector of Player*,
+and the user's name.
+The user is able to click tiles and create words and check the word against a dictionary
+If the user gets above the old highest score, a new window prompts the user to input an image file name*/
 
 #include "Game_window.h"
 
@@ -17,27 +15,31 @@ string rand_char(){
 }
 
 
-Game_window::Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*> play) : Window(xy, w, h, title),
-    
-    dictionary(dict),
+Game_window::Game_window(Point xy, int w, int h, const string& title, int size, const map<char, vector<string>>& dict, vector<Player*>& play, string name) : Window(xy, w, h, title),
+/*--------------------------------------------------------------------------------------------------*/
+//Data Members
 
-    players(play),
+    dictionary(dict),                   //map of dictionary
 
-    enter_button(Point(400,240),50, 20, "ENTER", cb_enter),
+    players(play),                      //vector of Player*
 
-    clear_button(Point(400,270),50, 20, "CLEAR", cb_clear),
+    username(name),                     //Player's name
 
-    quit_button(Point(400,300), 50, 20, "QUIT", cb_quit),
+    enter_button(Point(400,240),50, 20, "ENTER", cb_enter),     //Button to enter the word
 
-    word_display(Point(100,300), 100, 20, "Word:"),
+    clear_button(Point(400,270),50, 20, "CLEAR", cb_clear),     //Button to clear the outbox
 
-    highscore_display(Point(500, 20), 50, 20, "High score:"),
+    quit_button(Point(400,300), 50, 20, "QUIT", cb_quit),       //Button to return to the main menu
 
-    log_display(Point(400,150),150,50, "Game log:"),
+    word_display(Point(100,300), 100, 20, "Word:"),             //Outbow to display the current word
 
-    grid_sz(size),
+    highscore_display(Point(500, 20), 50, 20, "High score:"),   //Outbox to display the current high score
 
+    log_display(Point(400,150),150,50, "Game log:"),            //Textbox to display the log
 
+    grid_sz(size),                      //size that the user chose
+
+//26 buttons for the game tiles
     tile1(Point(30,10),50,50,rand_char(),cb_tile1),
     tile2(Point(90,10),50,50,rand_char(),cb_tile2),
     tile3(Point(150,10),50,50,rand_char(),cb_tile3),
@@ -64,12 +66,12 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int size, 
     tile24(Point(210,250),50,50,rand_char(),cb_tile24),
     tile25(Point(270,250),50,50,rand_char(),cb_tile25),
 
-    current_display(Point(500, 50), 50, 20, "Score"){
-    
-        
-        
+    current_display(Point(500, 50), 50, 20, "Score")        //Button for the current player's score
+/*-----------------------------------------------------------------------------------------------*/    
+    //Contructor
+    {
+        //Attach widgets and initialize outboxes
         create_tiles(grid_sz);
-       
         attach(enter_button);
         attach(clear_button);
         attach(quit_button);
@@ -80,16 +82,16 @@ Game_window::Game_window(Point xy, int w, int h, const string& title, int size, 
         current_display.put("0");
         word_display.put("Enter Letters");
         highest_score = outputHighestScore(players);
-        //highscore_display.put(to_string(highest_score));
-        highscore_display.put(to_string(grid_sz));
-
+        highscore_display.put(to_string(highest_score));
 }
 vector<string> allwords;
+string newimage = "";
+bool changedimage = false;
 //----------------------------------------------
 // function to create the letter tiles for the game
 void Game_window::create_tiles(int size){
     //creates the letter grid
-    if (grid_sz==5){
+    if (grid_sz == 5){
         attach(tile1);
         attach(tile2);
         attach(tile3);
@@ -100,7 +102,7 @@ void Game_window::create_tiles(int size){
         attach(tile16);
         attach(tile21);
     }
-    if (grid_sz>=4){
+    if (grid_sz >= 4){
         attach(tile7);
         attach(tile8);
         attach(tile9);
@@ -170,6 +172,7 @@ void Game_window::show_buttons(){
         tile6.show();
         tile11.show();
         tile15.show();
+        tile16.show();
         tile21.show();
         
     }
@@ -197,11 +200,12 @@ void Game_window::show_buttons(){
 
 // checks the word against the dictionary, updates score, clears word display,
 //untoggle the letter tiles
+
 void Game_window::enter_button_pressed(){
     // check dictionary to see if word is actually a word
     // Re-Show all tiles so the user can enter in more words
     show_buttons();
-
+    cout << changedimage<< endl;
     if(current_word==""){return;}           // if the user inputs nothing
     transform(current_word.begin(), current_word.end(), current_word.begin(), ::tolower); //Changes the inputted word from uppercase to lower
     for(auto words : allwords){
@@ -216,13 +220,20 @@ void Game_window::enter_button_pressed(){
     vector<string> first = dictionary[first_letter];                        
     for(auto word : first)  {                //iterates through the map The first character of the word is the key
         if(word == current_word){
-            allwords.push_back(current_word);
+            allwords.push_back(current_word);   //if the word is accepted, add it to the player's list of words
             int n = word.size();       
             current_score = current_score + n;                // updates the score
             current_display.put(to_string(current_score));
-            if(current_score > highest_score){
-                highest_score = current_score;
+            if(current_score > highest_score){                  //if the current score exceeds the highest score
+                highest_score = current_score;                  //update the highest score
                 highscore_display.put(to_string(highest_score));
+                if(newimage == ""){  
+                    changedimage == true;                    //If the player hasn't been quered to input image name
+                    Image_window image_win(Point(400,50),400,100,"New High Score!",players, username, &newimage);   //Open image window
+                    image_win.wait_for_button();
+                    this -> show();
+                    changedimage == true;
+                }
             }
             log_display.put("Word accepted, score updated!");
         }   
@@ -230,12 +241,10 @@ void Game_window::enter_button_pressed(){
 current_word = "";                  // reset the current word
 
 word_display.put(current_word);
-
     
 }
 //----------------------------------------------
 
-//what to do when a tile is pressed
 
 void Game_window::tile1_pressed(){
     current_word += tile1.label;
@@ -390,9 +399,51 @@ void Game_window::cb_quit(Address, Address pw){
 
 // return the current score, close the game window
 void Game_window::quit(){
-    button_pushed = true;
-    // store the score for the current player
-    hide();                       // close the window
+        //add the current score to the end of the vector of scores for that person
+        //check highest
+        //delete highest
+        //set highest
+        //output data
+        int iterator = 0;
+        if (allwords.size()>0){
+        allwords.erase(allwords.begin(),allwords.end());        //clear the vector of words used by player
+        }
+        changedimage = false;                                   
+        for(auto p : players){
+            if(p -> getName() == username){
+                p -> addScore(current_score);                   //add the current score to the user's scores vector
+                break;
+            }
+        }
+        bool same_highest = checkHighest(players);              
+        if(same_highest){                                       //if the highest score is with the highest player
+            if(newimage == ""){                                 //if the imagename wasn't changed
+                output_data(players);                           //output to the text file
+                newimage = "";
+                button_pushed = true;
+                hide();                                         //exit the game window
+            }
+            else{
+                for(auto p : players){          
+                    if(p->getIdentifier() == 'H'){              //if the imagename was changed
+                        p->changeImage(newimage);               //change the image attached with the player
+                        break;
+                    }
+                }
+                output_data(players);                           //output to the text file
+                newimage = "";
+                button_pushed = true;
+                hide();                                         //exit the game window
+            }
+        }
+        else{                                                   //if the highest score isn't with the old highest player
+            deleteHighest(players);                             //delete the old highest player and make them a regular player
+            setHighest(players, newimage);                      //create a new highest player and delete the regular player
+            newimage = "";
+            button_pushed = true;
+            hide();                                             //exit the window
+        }
+
 }
 
 void Game_window::cb_tile1(Address, Address pw){
@@ -470,28 +521,3 @@ void Game_window::cb_tile24(Address, Address pw){
 void Game_window::cb_tile25(Address, Address pw){
     reference_to<Game_window>(pw).tile25_pressed();
 }
-
-
-//int main(){
-//srand (time(NULL)); 
-//  try {
-//    // construct the GUI window
-//    
-//    //vector<string> d;
-//    map<char, vector<string>> dict;
-//    input_dictonary(dict);
-//    cout << dict.size() << endl;
-//    vector<Players*> players;
-//    input_data(players);
-//    Game_window win(Point(100,100),600,400,"lines",3,dict, players);
-//    return gui_main();  // inherited from Window; calls FLTK's run
-//  }
-//  catch(exception& e) {
-//    cerr << "exception: " << e.what() << '\n';
-//    return 1;
-//  }
-//  catch(...) {
-//    cerr << "some exception\n";
-//    return 2;
-//  }
-//}
